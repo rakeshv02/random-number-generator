@@ -8,142 +8,172 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-78VZWJ5B1W"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-78VZWJ5B1W');</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039091592734005" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}nav .brand{color:#38bdf8;font-weight:700;font-size:18px}.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}
+nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}
+nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}
+nav .brand{color:#38bdf8;font-weight:700;font-size:18px}
+.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}
+#app{max-width:560px;margin:40px auto;padding:0 20px}
+h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:28px}
+.card{background:#1e293b;border-radius:20px;padding:24px;border:1px solid #334155;margin-bottom:16px}
+.inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.inputs label{font-size:13px;color:#94a3b8}
+.inputs input{display:block;width:100%;margin-top:4px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:8px;padding:10px;font-size:18px;font-family:monospace}
+.checkboxes{display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap}
+.checkboxes label{display:flex;align-items:center;gap:7px;font-size:14px;color:#94a3b8;cursor:pointer}
+.checkboxes input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#38bdf8}
+#error-msg{color:#ef4444;font-size:14px;margin-bottom:12px;display:none}
+#generate-btn{width:100%;background:#38bdf8;color:#0f172a;border:none;border-radius:12px;padding:14px;font-size:17px;font-weight:700;cursor:pointer}
+#single-result{text-align:center;padding:32px 0 16px;display:none}
+#single-num{font-family:monospace;font-size:96px;font-weight:800;color:#38bdf8;line-height:1}
+#single-sub{font-size:14px;color:#64748b;margin-top:6px}
+#bulk-result{display:none}
+.bulk-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bulk-header h2{font-size:15px;font-weight:600}
+#copy-btn{background:#334155;color:#f1f5f9;border:none;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
+#numbers-wrap{display:flex;flex-wrap:wrap;gap:5px;max-height:220px;overflow-y:auto;margin-bottom:12px}
+.num-chip{background:#0f172a;color:#38bdf8;border-radius:6px;padding:4px 10px;font-family:monospace;font-size:14px;font-weight:600}
+#bulk-stats{display:flex;gap:16px;font-size:13px;color:#64748b;flex-wrap:wrap}
+#bulk-stats strong{color:#f1f5f9}
+.history-card{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;display:none}
+.history-header{padding:13px 18px;border-bottom:1px solid #334155;font-size:13px;color:#64748b;font-weight:600}
+.hist-row{padding:9px 18px;border-bottom:1px solid #0f172a;display:flex;justify-content:space-between;font-size:13px}
+</style>
 </head>
 <body>
 <nav><span class="brand">⚡ Tabutility</span><a href="https://tabutility.com">← All Tools</a></nav>
 <div class="ad-banner"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7039091592734005" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-<div id="root"></div>
-<script type="text/babel">
-//<![CDATA[
-const { useState } = React;
-
-export default function RNG() {
-  const [min, setMin] = useState(1);
-  const [max, setMax] = useState(100);
-  const [count, setCount] = useState(1);
-  const [unique, setUnique] = useState(true);
-  const [sorted, setSorted] = useState(false);
-  const [results, setResults] = useState([]);
-  const [single, setSingle] = useState(null);
-  const [error, setError] = useState('');
-  const [history, setHistory] = useState([]);
-  const [copied, setCopied] = useState(false);
-
-  const generate = () => {
-    setError('');
-    const lo = parseInt(min); const hi = parseInt(max); const n = parseInt(count);
-    if (isNaN(lo)||isNaN(hi)||isNaN(n)) { setError('Please enter valid numbers.'); return; }
-    if (lo >= hi) { setError('Min must be less than Max.'); return; }
-    if (n < 1 || n > 10000) { setError('Count must be between 1 and 10,000.'); return; }
-    const range = hi - lo + 1;
-    if (unique && n > range) { setError(`Can't generate ${n} unique numbers in range ${lo}–${hi} (only ${range} available).`); return; }
-
-    let nums = [];
-    if (unique) {
-      const pool = Array.from({length: range}, (_,i) => lo + i);
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i+1));
-        [pool[i],pool[j]] = [pool[j],pool[i]];
-      }
-      nums = pool.slice(0, n);
-    } else {
-      nums = Array.from({length: n}, () => Math.floor(Math.random() * range) + lo);
-    }
-    if (sorted) nums.sort((a,b) => a-b);
-    setResults(nums);
-    if (n === 1) setSingle(nums[0]);
-    setHistory(h => [{nums: nums.slice(0,10), total: n, range:`${lo}–${hi}`, time: new Date().toLocaleTimeString()}, ...h.slice(0,9)]);
-  };
-
-  const copy = () => {
-    navigator.clipboard.writeText(results.join(', ')).then(() => { setCopied(true); setTimeout(()=>setCopied(false),1500); });
-  };
-
-  return (
-    <div style={{maxWidth:580,margin:'40px auto',padding:'0 20px'}}>
-      <h1 style={{textAlign:'center',fontSize:28,fontWeight:700,marginBottom:8}}>Random Number Generator</h1>
-      <p style={{textAlign:'center',color:'#94a3b8',marginBottom:32}}>Generate one or thousands of random numbers in any range</p>
-
-      <div style={{background:'#1e293b',borderRadius:20,padding:'28px 24px',border:'1px solid #334155',marginBottom:20}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12,marginBottom:16}}>
-          <label style={{fontSize:13,color:'#94a3b8'}}>Min
-            <input type="number" value={min} onChange={e=>setMin(e.target.value)} style={{display:'block',width:'100%',marginTop:4,background:'#0f172a',color:'#f1f5f9',border:'1px solid #334155',borderRadius:8,padding:'10px',fontSize:18,fontFamily:'monospace'}}/>
-          </label>
-          <label style={{fontSize:13,color:'#94a3b8'}}>Max
-            <input type="number" value={max} onChange={e=>setMax(e.target.value)} style={{display:'block',width:'100%',marginTop:4,background:'#0f172a',color:'#f1f5f9',border:'1px solid #334155',borderRadius:8,padding:'10px',fontSize:18,fontFamily:'monospace'}}/>
-          </label>
-          <label style={{fontSize:13,color:'#94a3b8'}}>Count
-            <input type="number" min="1" max="10000" value={count} onChange={e=>setCount(e.target.value)} style={{display:'block',width:'100%',marginTop:4,background:'#0f172a',color:'#f1f5f9',border:'1px solid #334155',borderRadius:8,padding:'10px',fontSize:18,fontFamily:'monospace'}}/>
-          </label>
-        </div>
-
-        <div style={{display:'flex',gap:20,marginBottom:20,flexWrap:'wrap'}}>
-          <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',fontSize:14,color:'#94a3b8'}}>
-            <input type="checkbox" checked={unique} onChange={e=>setUnique(e.target.checked)} style={{width:16,height:16}}/>
-            No duplicates
-          </label>
-          <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer',fontSize:14,color:'#94a3b8'}}>
-            <input type="checkbox" checked={sorted} onChange={e=>setSorted(e.target.checked)} style={{width:16,height:16}}/>
-            Sort results
-          </label>
-        </div>
-
-        {error && <div style={{color:'#ef4444',fontSize:14,marginBottom:12}}>{error}</div>}
-
-        <button onClick={generate} style={{width:'100%',background:'#38bdf8',color:'#0f172a',border:'none',borderRadius:12,padding:'14px',fontSize:18,fontWeight:700,cursor:'pointer'}}>Generate</button>
-      </div>
-
-      {results.length === 1 && (
-        <div style={{background:'#1e293b',borderRadius:20,padding:'40px 24px',border:'2px solid #38bdf8',textAlign:'center',marginBottom:20}}>
-          <div style={{fontFamily:'monospace',fontSize:96,fontWeight:800,color:'#38bdf8',lineHeight:1}}>{single}</div>
-          <div style={{color:'#64748b',fontSize:14,marginTop:8}}>Random number between {min} and {max}</div>
-        </div>
-      )}
-
-      {results.length > 1 && (
-        <div style={{background:'#1e293b',borderRadius:16,padding:20,border:'1px solid #334155',marginBottom:20}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-            <h2 style={{fontSize:15,fontWeight:600}}>{results.length} numbers generated</h2>
-            <div style={{display:'flex',gap:8}}>
-              <button onClick={copy} style={{background:'#334155',color:'#f1f5f9',border:'none',borderRadius:8,padding:'6px 14px',fontSize:13,cursor:'pointer'}}>{copied?'✓ Copied':'Copy all'}</button>
-            </div>
-          </div>
-          <div style={{display:'flex',gap:4,flexWrap:'wrap',maxHeight:240,overflowY:'auto'}}>
-            {results.slice(0,500).map((n,i) => (
-              <span key={i} style={{background:'#0f172a',color:'#38bdf8',borderRadius:6,padding:'4px 10px',fontFamily:'monospace',fontSize:14,fontWeight:600}}>{n}</span>
-            ))}
-            {results.length > 500 && <span style={{color:'#64748b',fontSize:13,padding:'4px 10px'}}>…and {results.length-500} more</span>}
-          </div>
-          <div style={{marginTop:12,display:'flex',gap:16,fontSize:13,color:'#64748b'}}>
-            <span>Min: <strong style={{color:'#f1f5f9'}}>{Math.min(...results)}</strong></span>
-            <span>Max: <strong style={{color:'#f1f5f9'}}>{Math.max(...results)}</strong></span>
-            <span>Sum: <strong style={{color:'#f1f5f9'}}>{results.reduce((a,b)=>a+b,0).toLocaleString()}</strong></span>
-            <span>Avg: <strong style={{color:'#f1f5f9'}}>{(results.reduce((a,b)=>a+b,0)/results.length).toFixed(2)}</strong></span>
-          </div>
-        </div>
-      )}
-
-      {history.length > 0 && (
-        <div style={{background:'#1e293b',borderRadius:16,padding:16,border:'1px solid #334155'}}>
-          <h2 style={{fontSize:15,fontWeight:600,marginBottom:10}}>History</h2>
-          {history.map((h,i) => (
-            <div key={i} style={{fontSize:13,color:'#64748b',padding:'5px 0',borderBottom:'1px solid #0f172a',display:'flex',justifyContent:'space-between'}}>
-              <span>{h.time} — {h.total}×[{h.range}]</span>
-              <span style={{color:'#94a3b8',fontFamily:'monospace'}}>{h.nums.join(', ')}{h.total>10?'…':''}</span>
-            </div>
-          ))}
-        </div>
-      )}
+<div id="app">
+  <h1>Random Number Generator</h1>
+  <p class="subtitle">Generate one or thousands of random numbers in any range</p>
+  <div class="card">
+    <div class="inputs">
+      <label>Min<input type="number" id="inp-min" value="1"/></label>
+      <label>Max<input type="number" id="inp-max" value="100"/></label>
+      <label>Count<input type="number" id="inp-count" value="1" min="1" max="10000"/></label>
     </div>
-  );
+    <div class="checkboxes">
+      <label><input type="checkbox" id="chk-unique" checked/> No duplicates</label>
+      <label><input type="checkbox" id="chk-sort"/> Sort results</label>
+    </div>
+    <div id="error-msg"></div>
+    <button id="generate-btn" onclick="generate()">Generate</button>
+    <div id="single-result">
+      <div id="single-num"></div>
+      <div id="single-sub"></div>
+    </div>
+    <div id="bulk-result">
+      <div class="bulk-header">
+        <h2 id="bulk-heading"></h2>
+        <button id="copy-btn" onclick="copyAll()">Copy all</button>
+      </div>
+      <div id="numbers-wrap"></div>
+      <div id="bulk-stats"></div>
+    </div>
+  </div>
+  <div class="history-card" id="history-card">
+    <div class="history-header">HISTORY</div>
+    <div id="history-list"></div>
+  </div>
+</div>
+<script>
+var history = [];
+var lastResults = [];
+
+function generate() {
+  var lo = parseInt(document.getElementById('inp-min').value);
+  var hi = parseInt(document.getElementById('inp-max').value);
+  var n  = parseInt(document.getElementById('inp-count').value);
+  var unique = document.getElementById('chk-unique').checked;
+  var sorted = document.getElementById('chk-sort').checked;
+  var errEl = document.getElementById('error-msg');
+
+  errEl.style.display = 'none';
+  document.getElementById('single-result').style.display = 'none';
+  document.getElementById('bulk-result').style.display = 'none';
+
+  if (isNaN(lo)||isNaN(hi)||isNaN(n)) { showErr('Please enter valid numbers.'); return; }
+  if (lo >= hi) { showErr('Min must be less than Max.'); return; }
+  if (n < 1 || n > 10000) { showErr('Count must be 1–10,000.'); return; }
+  var range = hi - lo + 1;
+  if (unique && n > range) { showErr('Cannot generate '+n+' unique numbers in range '+lo+'–'+hi+' (only '+range+' available).'); return; }
+
+  var nums = [];
+  if (unique) {
+    var pool = [];
+    for (var i = 0; i < range; i++) pool.push(lo + i);
+    for (var j = pool.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random()*(j+1));
+      var tmp = pool[j]; pool[j] = pool[k]; pool[k] = tmp;
+    }
+    nums = pool.slice(0, n);
+  } else {
+    for (var i = 0; i < n; i++) nums.push(Math.floor(Math.random()*range)+lo);
+  }
+  if (sorted) nums.sort(function(a,b){ return a-b; });
+  lastResults = nums;
+
+  if (n === 1) {
+    document.getElementById('single-num').textContent = nums[0];
+    document.getElementById('single-sub').textContent = 'Random number between '+lo+' and '+hi;
+    document.getElementById('single-result').style.display = 'block';
+  } else {
+    document.getElementById('bulk-heading').textContent = nums.length.toLocaleString()+' numbers generated';
+    var wrap = document.getElementById('numbers-wrap');
+    wrap.innerHTML = '';
+    var show = Math.min(nums.length, 500);
+    for (var i = 0; i < show; i++) {
+      var chip = document.createElement('span'); chip.className = 'num-chip';
+      chip.textContent = nums[i]; wrap.appendChild(chip);
+    }
+    if (nums.length > 500) {
+      var more = document.createElement('span'); more.style.color='#64748b'; more.style.fontSize='13px'; more.style.padding='4px 10px';
+      more.textContent = '…and '+(nums.length-500)+' more'; wrap.appendChild(more);
+    }
+    var sum = nums.reduce(function(a,b){return a+b;},0);
+    var mn = Math.min.apply(null,nums); var mx = Math.max.apply(null,nums);
+    document.getElementById('bulk-stats').innerHTML =
+      '<span>Min: <strong>'+mn+'</strong></span>'+
+      '<span>Max: <strong>'+mx+'</strong></span>'+
+      '<span>Sum: <strong>'+sum.toLocaleString()+'</strong></span>'+
+      '<span>Avg: <strong>'+(sum/nums.length).toFixed(2)+'</strong></span>';
+    document.getElementById('bulk-result').style.display = 'block';
+  }
+
+  history.unshift({label:n+'×['+lo+'–'+hi+']',preview:nums.slice(0,6).join(', ')+(nums.length>6?'…':''),time:new Date().toLocaleTimeString()});
+  if (history.length > 10) history.pop();
+  renderHistory();
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<RNG />);
-//]]>
+function showErr(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+function copyAll() {
+  if (!lastResults.length) return;
+  var btn = document.getElementById('copy-btn');
+  navigator.clipboard.writeText(lastResults.join(', ')).then(function() {
+    btn.textContent = '✓ Copied';
+    setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
+  });
+}
+
+function renderHistory() {
+  var card = document.getElementById('history-card');
+  var list = document.getElementById('history-list');
+  if (!history.length) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  list.innerHTML = '';
+  history.forEach(function(h) {
+    var row = document.createElement('div'); row.className = 'hist-row';
+    row.innerHTML = '<span style="color:#64748b">'+h.time+'</span><span style="color:#94a3b8">'+h.label+'</span><span style="color:#38bdf8;font-family:monospace">'+h.preview+'</span>';
+    list.appendChild(row);
+  });
+}
 </script>
 </body>
 </html>
